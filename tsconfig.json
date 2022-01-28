@@ -1,0 +1,50 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"useDefineForClassFields": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"strict": true,
+		"jsx": "preserve",
+		"sourceMap": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"lib": ["esnext", "dom"],
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"skipLibCheck": true,
+		"suppressImplicitAnyIndexErrors": true,
+
+		"types": [
+			"vite/client",
+			"vite-plugin-pages/client",
+			"vite-plugin-vue-layouts/client",
+			"vite-plugin-pwa/client"
+		],
+
+		"baseUrl": "./",
+		"paths": {
+			"@client": ["./client/index.ts"],
+			"@client/*": ["./client/*"],
+			"@lib/*": ["./lib/*"],
+			"@server": ["./server/index.ts"],
+			"@server/*": ["./server/*"]
+		}
+	},
+	"include": [
+		"components.d.ts",
+		"lib/**/*.ts",
+		"server/**/*.ts",
+		"client/**/*.ts",
+		"client/**/*.d.ts",
+		"client/**/*.vue"
+	],
+	"exclude": ["node_modules", "lib/utils/typeorm-model-shim.ts"],
+	"ts-node": {
+		"require": ["tsconfig-paths/register"],
+		"transpileOnly": true,
+		"compilerOptions": {
+			"module": "CommonJS"
+		}
+	}
+}

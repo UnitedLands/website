@@ -1,0 +1,12 @@
+{
+	"import-all-of-vue": {
+		"prefix": "api-route",
+		"body": [
+			"import api from '@server/includes/api'\n",
+			"namespace $2 {}\n",
+			"@api.route($1)",
+			"class $2 extends api.Route {$0}\n",
+			"export default $2"
+		]
+	}
+}
