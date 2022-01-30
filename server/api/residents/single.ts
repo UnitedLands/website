@@ -1,4 +1,8 @@
-import { TownyResidentWithBalance } from '@server/database/models/Towny/Resident'
+import {
+	TownyResidentWithBalance,
+	TownyResidentWithFavoriteWeapon,
+	TownyResidentWithKD
+} from '@server/database/models/Towny/Resident'
 import api from '@server/includes/api'
 import ServerError from '@server/includes/ServerError'
 
@@ -23,15 +27,41 @@ class ResidentsSingleAPIRoute extends api.Route<{
 					name: this.resident_name
 				}
 			})
+
+			this.reply.header('cache-control', 'public, max-age=43200')
 		} catch (e) {
-			return new ServerError('resident not found', 404)
+			throw new ServerError('resident not found', 404)
 		}
 	}
 
 	@api.endpoint
 	get() {
-		this.reply.header('cache-control', 'public, max-age=7200')
 		return this.resident
+	}
+
+	@api.endpoint('get', '/killsdeaths')
+	async getKD() {
+		try {
+			const kd = await TownyResidentWithKD.findOneOrFail({
+				where: {
+					uuid: this.resident.uuid
+				}
+			})
+
+			kd.favorite = await TownyResidentWithFavoriteWeapon.findOne({
+				where: {
+					uuid: this.resident.uuid
+				},
+				order: {
+					kills: 'DESC'
+				}
+			})
+
+			return kd
+		} catch (e) {
+			this.console.error(e)
+			return new ServerError('unexpected error')
+		}
 	}
 }
 

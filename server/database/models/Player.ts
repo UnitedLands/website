@@ -20,14 +20,7 @@ export default class Player extends BaseModel<PlayerData, string> {
 	@Column('varchar', { length: 50, primary: true, unique: true })
 	declare uid: string
 
-	// @OneToOne(() => Character, m => m.player, {
-	// 	onDelete: 'CASCADE'
-	// })
-	// @JoinColumn()
-	// declare character?: CharacterData
-
-	@OneToOne(() => Xconomy, m => m.player, { eager: true })
-	declare balance?: XconomyData | number
+	declare balance?: number
 
 	@OneToOne(() => TownyResident, m => m.player)
 	declare resident?: OneToOneRelation<TownyResident>

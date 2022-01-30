@@ -31,7 +31,7 @@ const isAdmin = computed(
 
 			<Link v-if="isAdmin" to="/admin">Admin</Link>
 
-			<Link v-if="!auth.isLoggedIn" to="/register">Register</Link>
+			<!-- <Link v-if="!auth.isLoggedIn" to="/register">Register</Link> -->
 
 			<Link v-if="auth.isLoggedIn" to="/login?logout=true">Logout</Link>
 			<Link v-else to="/login">Login</Link>

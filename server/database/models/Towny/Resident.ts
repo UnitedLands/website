@@ -89,7 +89,7 @@ export default class TownyResident extends BaseModel<TownyResidentData, string> 
 	declare metadata: string
 
 	@Column('text', { nullable: true })
-	declare uuid?: string
+	declare uuid: string
 
 	@Column('bigint', { name: 'joinedTownAt' })
 	declare joined_town_at: number
@@ -112,4 +112,69 @@ export default class TownyResident extends BaseModel<TownyResidentData, string> 
 export class TownyResidentWithBalance extends TownyResident {
 	@ViewColumn()
 	declare balance: number
+}
+
+export interface TownyResidentWithFavoriteWeaponData {
+	uuid: string
+	weapon: string
+	kills: number
+}
+
+@ViewEntity({
+	expression: `
+		SELECT resident.uuid as uuid, k.weapon as weapon, k.count as kills
+		FROM TOWNY_RESIDENTS resident
+		INNER JOIN (
+			SELECT killer_uuid as uuid, weapon, COUNT(weapon) as count
+			FROM plan_kills
+			GROUP BY killer_uuid, weapon
+		) k ON k.uuid = resident.uuid
+	`
+})
+export class TownyResidentWithFavoriteWeapon extends BaseModel<TownyResidentWithFavoriteWeaponData> {
+	@ViewColumn()
+	declare uuid: string
+
+	@ViewColumn()
+	declare weapon: string
+
+	@ViewColumn()
+	declare kills: number
+}
+
+export interface TownyResidentWithKDData {
+	uuid: string
+	kills: number
+	deaths: number
+	favorite?: TownyResidentWithFavoriteWeaponData
+}
+
+@ViewEntity({
+	expression: `
+		SELECT resident.uuid as uuid, kills.count as kills, deaths.count as deaths
+		FROM TOWNY_RESIDENTS resident
+		INNER JOIN (
+			SELECT k.killer_uuid as uuid, COUNT(k.killer_uuid) count
+			FROM plan_kills k
+			GROUP BY k.killer_uuid
+		) kills ON kills.uuid = resident.uuid
+		INNER JOIN (
+			SELECT d.victim_uuid as uuid, COUNT(d.victim_uuid) count
+			FROM plan_kills d
+			GROUP BY d.victim_uuid
+		) deaths ON deaths.uuid = resident.uuid
+		GROUP BY resident.uuid
+	`
+})
+export class TownyResidentWithKD extends BaseModel<TownyResidentWithKDData> {
+	@ViewColumn()
+	declare uuid: string
+
+	@ViewColumn()
+	declare kills: number
+
+	@ViewColumn()
+	declare deaths: number
+
+	declare favorite?: TownyResidentWithFavoriteWeapon
 }

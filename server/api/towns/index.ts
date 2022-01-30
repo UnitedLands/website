@@ -70,7 +70,7 @@ class TownsAPIRoute extends api.Route<{
 			const [items, total] = await TownyTownWithBalance.findAndCount(opts)
 
 			if (!items.length) return new ServerError('no more items', 404)
-			this.reply.header('cache-control', 'public, max-age=7200')
+			this.reply.header('cache-control', 'public, max-age=43200')
 			return {
 				total,
 				items

@@ -1,6 +1,6 @@
 {
 	"name": "unitedlands",
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"scripts": {
 		"dev:server": "nodemon",
 		"dev:client": "vite-ssr dev",
