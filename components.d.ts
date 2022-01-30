@@ -35,6 +35,7 @@ declare module 'vue' {
     ResidentAvatar: typeof import('./client/components/Resident/Avatar.vue')['default']
     ResidentBalance: typeof import('./client/components/Resident/Balance.vue')['default']
     ResidentCard: typeof import('./client/components/Resident/Card.vue')['default']
+    ResidentKD: typeof import('./client/components/Resident/KD.vue')['default']
     ResidentName: typeof import('./client/components/Resident/Name.vue')['default']
     ResidentRank: typeof import('./client/components/Resident/Rank.vue')['default']
     ResidentRanks: typeof import('./client/components/Resident/Ranks.vue')['default']

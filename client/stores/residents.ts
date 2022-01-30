@@ -2,9 +2,9 @@ import { ClientStore, defineStore, DIE, ProvidedStoreItem } from '@client'
 import { useAPI } from '@client/modules/api'
 import date from '@lib/utils/date'
 import ResidentsAPIRoute from '@server/api/residents'
-import { TownyResidentData } from '@server/database/models/Towny/Resident'
-import { merge } from 'lodash'
-import { inject, provide } from 'vue'
+import { TownyResidentData, TownyResidentWithKDData } from '@server/database/models/Towny/Resident'
+import { defaults, merge } from 'lodash'
+import { inject, provide, reactive } from 'vue'
 
 declare module '@client' {
 	export interface ClientState {
@@ -14,6 +14,9 @@ declare module '@client' {
 
 export interface ResidentsState {
 	items: TownyResidentData[]
+	kd: {
+		[name: string]: TownyResidentWithKDData
+	}
 }
 
 export class ResidentsStore extends ClientStore('residents') {
@@ -78,6 +81,20 @@ export class ResidentsStore extends ClientStore('residents') {
 
 		return data
 	}
+
+	async fetchKD(name: string) {
+		const existing = this.state.kd[name]
+		if (existing) return Promise.resolve(existing)
+
+		const { data } = await this.api.get<{
+			uuid: string
+			kills: number
+			deaths: number
+		}>(`residents/${name}/killsdeaths`)
+
+		this.state.kd[name] = reactive(data)
+		return data
+	}
 }
 
 export function useResidents() {
@@ -93,8 +110,8 @@ export function injectResident() {
 }
 
 export default defineStore(state => {
-	if (!state.residents)
-		state.residents = {
-			items: []
-		}
+	state.residents = defaults(state.residents ?? {}, {
+		items: [],
+		kd: {}
+	})
 })

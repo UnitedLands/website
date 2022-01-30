@@ -55,12 +55,12 @@ export default defineConfig({
 			dts: true,
 			directoryAsNamespace: true,
 			dirs: ['client/components']
-		}),
-		VitePWA({
-			manifest: {
-				name: 'UnitedLands'
-			}
 		})
+		// VitePWA({
+		// 	manifest: {
+		// 		name: 'UnitedLands'
+		// 	}
+		// })
 	],
 
 	optimizeDeps: {

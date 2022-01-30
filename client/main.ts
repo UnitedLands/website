@@ -8,17 +8,17 @@ import { ClientContext } from '@client'
 import { createState } from '@client/includes/state'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
-if (!import.meta.env.SSR) {
-	useRegisterSW({
-		immediate: true,
-		onRegistered(d) {
-			console.log(d)
-		},
-		onRegisterError(error) {
-			console.log(error)
-		}
-	})
-}
+// if (!import.meta.env.SSR) {
+// 	useRegisterSW({
+// 		immediate: true,
+// 		onRegistered(d) {
+// 			console.log(d)
+// 		},
+// 		onRegisterError(error) {
+// 			console.log(error)
+// 		}
+// 	})
+// }
 
 const routes = setupLayouts(generatedRoutes)
 

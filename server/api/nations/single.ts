@@ -22,8 +22,10 @@ class NationsSingleAPIRoute extends api.Route<{
 			this.nation = await TownyNationWithBalance.findOneOrFail({
 				name: this.nation_name
 			})
+
+			this.reply.header('cache-control', 'public, max-age=43200')
 		} catch (e) {
-			return new ServerError('nation not found', 404)
+			throw new ServerError('nation not found', 404)
 		}
 	}
 

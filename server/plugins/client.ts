@@ -3,6 +3,7 @@ import path from 'path'
 import api from '@server/includes/api'
 import fastifyStatic from 'fastify-static'
 import { resolveFromCWD } from '@server/includes/functions'
+import ServerError from '@server/includes/ServerError'
 
 const dist = resolveFromCWD('dist')
 
@@ -49,8 +50,10 @@ export default api.definePlugin(async function (instance) {
 			})
 		},
 		async get(request, reply) {
+			if (request.url.startsWith('/api')) return new ServerError('not found', 404)
+
 			const url = `${request.protocol}://${request.hostname}${request.url}`
-			console.log(request.url)
+			request.log.info(request.url)
 
 			const results = await this.render(url, {
 				manifest: this.manifest,
@@ -58,8 +61,6 @@ export default api.definePlugin(async function (instance) {
 				request: request.raw,
 				response: reply.raw
 			})
-
-			console.log(results)
 
 			if (results.status) reply.status(results.status)
 			if (results.headers) {
@@ -70,7 +71,7 @@ export default api.definePlugin(async function (instance) {
 				}
 			}
 
-			reply.type('text/html')
+			reply.type('text/html').header('cache-control', 'public, max-age=43200')
 			return results.html
 		}
 	})

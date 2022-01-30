@@ -73,12 +73,17 @@ class ResidentsAPIRoute extends api.Route<{
 
 	@api.endpoint
 	async get() {
-		const opts = this.findOptions
-		const [items, total] = await TownyResidentWithBalance.findAndCount(opts)
+		try {
+			const opts = this.findOptions
+			const [items, total] = await TownyResidentWithBalance.findAndCount(opts)
 
-		this.reply.header('cache-control', 'public, max-age=7200')
-		if (!items.length) return new ServerError('no more residents', 404)
-		return { total, items }
+			if (!items.length) return new ServerError('no more residents', 404)
+			this.reply.header('cache-control', 'public, max-age=43200')
+			return { total, items }
+		} catch (error) {
+			this.console.error(error)
+			return new ServerError('unexpected error')
+		}
 	}
 }
 

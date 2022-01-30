@@ -9,7 +9,7 @@ export function createSessionStore() {
 		// dont catch because cookie isn't deleted for some reason
 		get: async (id: string): Promise<[SessionData, number]> => {
 			if (!repo) return [{}, 0]
-
+			console.log('fetching user session')
 			const session = await repo.findOneOrFail({ id }, { relations: ['user'] })
 			const expires = dayjs(Number(session.expires)).valueOf()
 			const data = {

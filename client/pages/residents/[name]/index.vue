@@ -64,7 +64,9 @@ provideNation(nation)
 				{{ residentName }}
 			</ResidentName>
 
-			<ResidentRanks />
+			<!-- <ResidentRanks /> -->
+
+			<ResidentKD />
 
 			<!-- <TownName element="h2" v-slot="{ townName }">
 				<h4>Town</h4>
@@ -103,14 +105,14 @@ provideNation(nation)
 	.details {
 		display: grid;
 		grid-template-columns: auto 1fr auto;
-		grid-template-rows: 50px auto auto 1em auto 1em auto;
-		grid-template-areas: 'avatar . .' 'avatar residentname balance' 'avatar ranks .' 'avatar . .' 'avatar nation .' 'avatar . .' 'avatar town .';
-		column-gap: 1em;
+		grid-template-rows: 50px auto auto auto auto auto;
+		grid-template-areas: 'avatar . .' 'avatar residentname kd' 'avatar . kd' 'avatar balance kd' 'avatar nation nation' 'avatar town town';
+		gap: 1em;
 
 		z-index: 2;
 
 		width: 100%;
-		max-width: 900px;
+		max-width: 800px;
 
 		.resident-avatar {
 			--user-avatar-size: 200px;
@@ -128,10 +130,12 @@ provideNation(nation)
 		.resident-name,
 		.resident-balance {
 			@include flex(column);
+			padding: 0px;
+
 			h4 {
 				font-size: 0.7em;
 				font-weight: 600;
-				color: lightgray;
+				color: gray;
 				text-transform: capitalize;
 			}
 
@@ -148,8 +152,13 @@ provideNation(nation)
 			grid-area: ranks;
 		}
 
+		.resident-kd {
+			grid-area: kd;
+			align-self: center;
+		}
+
 		.resident-balance {
-			@include flex(column, flex-start, flex-end);
+			@include flex(column);
 			grid-area: balance;
 		}
 
@@ -157,6 +166,7 @@ provideNation(nation)
 		.nation {
 			color: inherit;
 			text-decoration: none;
+			margin-top: 1em;
 		}
 
 		.town {
@@ -165,23 +175,6 @@ provideNation(nation)
 
 		.nation {
 			grid-area: nation;
-		}
-
-		.residents {
-			grid-area: residents;
-
-			@include flex(column);
-			width: 100%;
-			max-width: 1000px;
-			margin-top: 1em;
-			row-gap: 1em;
-
-			flex-shrink: 0;
-
-			.link {
-				color: inherit;
-				text-decoration: none;
-			}
 		}
 	}
 }

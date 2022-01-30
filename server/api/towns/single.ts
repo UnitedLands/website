@@ -22,8 +22,10 @@ class TownsSingleAPIRoute extends api.Route<{
 			this.town = await TownyTownWithBalance.findOneOrFail({
 				name: this.town_name
 			})
+
+			this.reply.header('cache-control', 'public, max-age=43200')
 		} catch (e) {
-			return new ServerError('town not found', 404)
+			throw new ServerError('town not found', 404)
 		}
 	}
 
@@ -41,7 +43,6 @@ class TownsSingleAPIRoute extends api.Route<{
 				}
 			})
 
-			this.reply.header('cache-control', 'public, max-age=7200')
 			return {
 				items,
 				total

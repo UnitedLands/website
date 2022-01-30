@@ -6,6 +6,8 @@ import { createConnection } from 'typeorm'
 export default async function startDatabase() {
 	const connection = await createConnection({
 		type: 'mysql',
+		host: process.env.DB_HOST ?? 'localhost',
+		port: Number(process.env.DB_PORT ?? 3306),
 		database: process.env.DB_NAME!,
 		username: process.env.DB_USER!,
 		password: process.env.DB_PASS!,
