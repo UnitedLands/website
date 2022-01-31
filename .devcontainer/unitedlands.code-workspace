@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "../lib"
+		},
+		{
+			"path": "../server"
+		},
+		{
+			"path": "../client"
+		},
+		{
+			"name": "root",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"volar.takeOverMode.enabled": false
+	}
+}
