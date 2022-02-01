@@ -10,6 +10,7 @@ export default defineComponent({
 type Props = {
 	interactable?: boolean
 	loading?: 'eager' | 'lazy'
+	ui?: boolean
 	cords?: {
 		world: string
 		x: number
@@ -20,17 +21,18 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
 	interactable: false,
-	loading: 'lazy'
+	loading: 'lazy',
+	ui: false
 })
 
 const cords = computed(() => props.cords)
 
 const mapURL = computed(() => {
-	if (!cords.value) return 'https://map.unitedlands.org/?ui=false'
+	if (!cords.value) return `https://map.unitedlands.org/?ui=${props.ui}`
 	const { world, x, z } = cords.value
 	const zoom = cords.value.zoom ?? 1
 
-	return `https://map.unitedlands.org/?ui=false#${world};flat;${x},64,${z};${zoom}`
+	return `https://map.unitedlands.org/?ui=${props.ui}#${world};flat;${x},64,${z};${zoom}`
 })
 </script>
 
