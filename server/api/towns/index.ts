@@ -32,7 +32,7 @@ class TownsAPIRoute extends api.Route<{
 	}
 
 	get skip() {
-		return this.page === 1 ? 0 : this.page * this.take
+		return this.page === 0 ? 0 : (this.page - 1) * this.take
 	}
 
 	get idsOnly() {
